@@ -1,0 +1,4 @@
+########### Data Preprocessing ##########
+spellcheck: True
+stopword_removal: True
+lemmatization: True

@@ -25,25 +25,11 @@
 #
 # See the License for the specific language governing permissions and
 # limitations under the License.
+"""
+This is a boilerplate pipeline 'feature_engineering'
+generated using Kedro 0.17.5
+"""
 
-"""Project pipelines."""
-from typing import Dict
+from .pipeline import create_pipeline
 
-from kedro.pipeline import Pipeline
-
-from nlp_with_disaster_feeds.pipelines import data_preprocessing as dp
-
-
-def register_pipelines() -> Dict[str, Pipeline]:
-    """Register the project's pipelines.
-
-    Returns:
-        A mapping from a pipeline name to a ``Pipeline`` object.
-    """
-    # Instantiate pipelines
-    data_preprocessing_pipeline = dp.create_pipeline()
-
-    return {
-        "__default__": Pipeline([data_preprocessing_pipeline]),
-        "data_preprocessing": data_preprocessing_pipeline,
-    }
+__all__ = ["create_pipeline"]

@@ -1,3 +1,28 @@
-feeds:
+########### Raw Data ##########
+raw_tweets:
   type: pandas.CSVDataSet
-  filepath: data/01_raw/train.csv
+  filepath: data/01_raw/raw_tweets.csv
+  load_args:
+    header:
+    names: ['target', 'id', 'date', 'query', 'user', 'text']
+    encoding: 'ISO-8859-1'
+    nrows: 100
+  layer: Raw
+
+########## Intermediate Data ##########
+intermediate_tweets:
+  type: pandas.CSVDataSet
+  filepath: data/02_intermediate/intermediate_tweets.csv
+  load_args:
+    nrows: 100
+  layer: Intermediate
+
+########## Primary Data ###########
+cleaned_tweets:
+  type: pandas.CSVDataSet
+  filepath: data/03_primary/cleaned_tweets.csv
+  load_args:
+    header:
+    names: ['target', 'id', 'date', 'query', 'user', 'text']
+    encoding: 'ISO-8859-1'
+  layer: Primary

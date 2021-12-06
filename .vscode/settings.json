@@ -1,3 +1,33 @@
 {
-  "jupyter.jupyterServerType": "remote"
+  "jupyter.jupyterServerType": "local",
+  "python.linting.enabled": true,
+  "python.linting.mypyEnabled": true,
+  "python.linting.pylintEnabled": true,
+  "python.analysis.diagnosticSeverityOverrides": {
+    "reportUndefinedVariable": "none"
+  },
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true,
+    "**/.mypy_cache": true,
+    ".ipython": true,
+    ".ipynb_checkpoints": true,
+    ".telemetry": true
+  },
+  "cSpell.words": [
+    "haha",
+    "kedro",
+    "lemmatization",
+    "lemmatize",
+    "lemmatizer",
+    "nrows",
+    "pipelinex",
+    "shoulda",
+    "stopwords"
+  ],
+  "autoDocstring.docstringFormat": "google"
 }
