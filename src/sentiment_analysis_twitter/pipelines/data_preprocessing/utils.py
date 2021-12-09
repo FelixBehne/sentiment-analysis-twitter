@@ -4,14 +4,9 @@ from typing import List, Union
 
 import nltk
 import preprocessor as p
-from nltk import word_tokenize
-from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from spellchecker import SpellChecker
 
-nltk.download("wordnet")
-nltk.download("stopwords")
-nltk.download("punkt")
 
 abbr_dict = {
     "what's": "what is",
@@ -109,9 +104,6 @@ def basic_cleaner(tweet: str) -> str:
     # remove urls, hashtags, mentions and rts
     clean_text = p.clean(clean_text)
 
-    # remove quotations
-    clean_text = clean_text.replace('"', "")
-
     # remove punctuations
     clean_text = re.sub(
         r"(\.|,|:|;|\?|!|\)|\(|\-|\[|\]|\{|\}|\*|\||\<|\>|%|&|/|$|\+|@|#|\$|£|=|\^|~)",
@@ -129,13 +121,6 @@ def basic_cleaner(tweet: str) -> str:
     clean_text = re.sub("[i]{3,}", "ii", clean_text)
     clean_text = re.sub("[o]{3,}", "oo", clean_text)
     clean_text = re.sub("[u]{3,}", "uu", clean_text)
-
-    # remove non ascii
-    tmp = ""
-    for char in clean_text:
-        if ord(char) < 128:
-            tmp += char
-    clean_text = tmp
 
     # remove redundant whitespaces
     clean_text = re.sub(" +", " ", clean_text)
@@ -159,7 +144,7 @@ def basic_cleaner(tweet: str) -> str:
 
 
 def normalize(
-    tweet: str, stopword_removal: bool, lemmatization: bool, spellcheck: bool
+    tweet: str, lemmatization: bool, spellcheck: bool
 ) -> Union[List[str], str]:
     """Normalizes tweets by applying lemmatization and a topword removal.
 
@@ -193,10 +178,9 @@ def normalize(
                 corrected_text.append(word)
         clean_text = " ".join(corrected_text)
 
-    # Remove stopwords
-    if stopword_removal:
-        stop_words = set(stopwords.words("english"))
-        word_tokens = word_tokenize(clean_text)
-        clean_text = [w for w in word_tokens if not w.lower() in stop_words]
-
     return clean_text
+
+
+if __name__ == "__main__":
+    nltk.download("wordnet", quiet=True)
+    nltk.download("punkt", quiet=True)

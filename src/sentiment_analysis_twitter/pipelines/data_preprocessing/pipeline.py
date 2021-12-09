@@ -18,7 +18,6 @@ def create_pipeline():
                 normalize_tweets,
                 inputs=[
                     "intermediate_tweets",
-                    "params:stopword_removal",
                     "params:lemmatization",
                     "params:spellcheck",
                 ],

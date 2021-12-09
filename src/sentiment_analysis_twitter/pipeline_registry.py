@@ -26,26 +26,36 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Project settings."""
-from nlp_with_disaster_feeds.hooks import ProjectHooks
+"""Project pipelines."""
+from typing import Dict
 
-# Instantiate and list your project hooks here
-HOOKS = (ProjectHooks(),)
+from kedro.pipeline import Pipeline
 
-# List the installed plugins for which to disable auto-registry
-# DISABLE_HOOKS_FOR_PLUGINS = ("kedro-viz",)
+from sentiment_analysis_twitter.pipelines import data_preprocessing as dp
+from sentiment_analysis_twitter.pipelines import feature_engineering as fe
+from sentiment_analysis_twitter.pipelines import train_eval as te
 
-# Define where to store data from a KedroSession. Defaults to BaseSessionStore.
-# from kedro.framework.session.store import ShelveStore
-# SESSION_STORE_CLASS = ShelveStore
 
-# Define keyword arguments to be passed to `SESSION_STORE_CLASS` constructor
-# SESSION_STORE_ARGS = {
-#     "path": "./sessions"
-# }
+def register_pipelines() -> Dict[str, Pipeline]:
+    """Register the project's pipelines.
 
-# Define custom context class. Defaults to `KedroContext`
-# CONTEXT_CLASS = KedroContext
+    Returns:
+        A mapping from a pipeline name to a ``Pipeline`` object.
+    """
+    # Instantiate pipelines
+    data_preprocessing_pipeline = dp.create_pipeline()
+    feature_engineering_pipeline = fe.create_pipeline()
+    train_evaluate_pipeline = te.create_pipeline()
 
-# Define the configuration folder. Defaults to `conf`
-# CONF_ROOT = "conf"
+    return {
+        "__default__": Pipeline(
+            [
+                data_preprocessing_pipeline,
+                feature_engineering_pipeline,
+                train_evaluate_pipeline,
+            ]
+        ),
+        "data_preprocessing": data_preprocessing_pipeline,
+        "feature_engineering": feature_engineering_pipeline,
+        "train_eval": train_evaluate_pipeline,
+    }

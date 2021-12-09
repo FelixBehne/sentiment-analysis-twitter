@@ -1,8 +1,8 @@
-.. nlp_with_disaster_feeds documentation master file, created by sphinx-quickstart.
+.. sentiment_analysis_twitter documentation master file, created by sphinx-quickstart.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to project nlp_with_disaster_feeds's API docs!
+Welcome to project sentiment_analysis_twitter's API docs!
 =============================================
 
 .. toctree::

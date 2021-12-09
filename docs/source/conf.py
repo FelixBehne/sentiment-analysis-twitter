@@ -29,7 +29,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# nlp_with_disaster_feeds documentation build
+# sentiment_analysis_twitter documentation build
 # configuration file, created by sphinx-quickstart.
 #
 # This file is execfile()d with the current directory set to its
@@ -50,11 +50,11 @@ import re
 from kedro.framework.cli.utils import find_stylesheets
 from recommonmark.transform import AutoStructify
 
-from nlp_with_disaster_feeds import __version__ as release
+from sentiment_analysis_twitter import __version__ as release
 
 # -- Project information -----------------------------------------------------
 
-project = "nlp_with_disaster_feeds"
+project = "sentiment_analysis_twitter"
 copyright = "2021, QuantumBlack Visual Analytics Limited"
 author = "QuantumBlack"
 
@@ -149,7 +149,7 @@ html_show_sourcelink = False
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "nlp_with_disaster_feedsdoc"
+htmlhelp_basename = "sentiment_analysis_twitterdoc"
 
 # -- Options for LaTeX output ------------------------------------------------
 
@@ -177,8 +177,8 @@ latex_elements = {
 latex_documents = [
     (
         master_doc,
-        "nlp_with_disaster_feeds.tex",
-        "nlp_with_disaster_feeds Documentation",
+        "sentiment_analysis_twitter.tex",
+        "sentiment_analysis_twitter Documentation",
         "QuantumBlack",
         "manual",
     )
@@ -191,8 +191,8 @@ latex_documents = [
 man_pages = [
     (
         master_doc,
-        "nlp_with_disaster_feeds",
-        "nlp_with_disaster_feeds Documentation",
+        "sentiment_analysis_twitter",
+        "sentiment_analysis_twitter Documentation",
         [author],
         1,
     )
@@ -206,11 +206,11 @@ man_pages = [
 texinfo_documents = [
     (
         master_doc,
-        "nlp_with_disaster_feeds",
-        "nlp_with_disaster_feeds Documentation",
+        "sentiment_analysis_twitter",
+        "sentiment_analysis_twitter Documentation",
         author,
-        "nlp_with_disaster_feeds",
-        "Project nlp_with_disaster_feeds codebase.",
+        "sentiment_analysis_twitter",
+        "Project sentiment_analysis_twitter codebase.",
         "Data-Science",
     )
 ]

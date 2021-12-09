@@ -28,9 +28,7 @@
 
 from setuptools import find_packages, setup
 
-entry_point = (
-    "nlp-with-disaster-feeds = nlp_with_disaster_feeds.__main__:main"
-)
+entry_point = "sentiment-analysis-twitter = sentiment_analysis_twitter.__main__:main"
 
 
 # get the dependencies and installs
@@ -45,7 +43,7 @@ with open("requirements.txt", "r", encoding="utf-8") as f:
             requires.append(req)
 
 setup(
-    name="nlp_with_disaster_feeds",
+    name="sentiment_analysis_twitter",
     version="0.1",
     packages=find_packages(exclude=["tests"]),
     entry_points={"console_scripts": [entry_point]},

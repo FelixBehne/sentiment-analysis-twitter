@@ -45,7 +45,7 @@ from kedro.framework.context import KedroContext
 @pytest.fixture
 def project_context():
     return KedroContext(
-        package_name="nlp_with_disaster_feeds", project_path=Path.cwd()
+        package_name="sentiment_analysis_twitter", project_path=Path.cwd()
     )
 
 
@@ -54,4 +54,4 @@ def project_context():
 # functionality
 class TestProjectContext:
     def test_package_name(self, project_context):
-        assert project_context.package_name == "nlp_with_disaster_feeds"
+        assert project_context.package_name == "sentiment_analysis_twitter"

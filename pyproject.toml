@@ -1,6 +1,6 @@
 [tool.kedro]
-package_name = "nlp_with_disaster_feeds"
-project_name = "nlp-with-disaster-feeds"
+package_name = "sentiment_analysis_twitter"
+project_name = "sentiment-analysis-twitter"
 project_version = "0.17.5"
 
 [tool.isort]
@@ -14,4 +14,4 @@ known_third_party = "kedro"
 [tool.pytest.ini_options]
 addopts = """
 --cov-report term-missing \
---cov src/nlp_with_disaster_feeds -ra"""
+--cov src/sentiment_analysis_twitter -ra"""

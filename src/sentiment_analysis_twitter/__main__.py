@@ -25,8 +25,8 @@
 #
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""nlp-with-disaster-feeds file for ensuring the package is executable
-as `nlp-with-disaster-feeds` and `python -m nlp_with_disaster_feeds`
+"""sentiment-analysis-twitter file for ensuring the package is executable
+as `sentiment-analysis-twitter` and `python -m sentiment_analysis_twitter`
 """
 import importlib
 from pathlib import Path

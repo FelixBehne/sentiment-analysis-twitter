@@ -16,7 +16,9 @@
     "**/.mypy_cache": true,
     ".ipython": true,
     ".ipynb_checkpoints": true,
-    ".telemetry": true
+    ".telemetry": true,
+    "**/__pycache__": true,
+    "**/info.log": true
   },
   "cSpell.words": [
     "haha",
@@ -27,7 +29,10 @@
     "nrows",
     "pipelinex",
     "shoulda",
-    "stopwords"
+    "stopwords",
+    "vectorize",
+    "vectorizer"
   ],
-  "autoDocstring.docstringFormat": "google"
+  "autoDocstring.docstringFormat": "google",
+  "python.linting.pylintArgs": ["--rcfile=${workspaceFolder}/.pylintrc"]
 }

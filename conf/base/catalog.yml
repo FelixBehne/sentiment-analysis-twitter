@@ -6,23 +6,57 @@ raw_tweets:
     header:
     names: ['target', 'id', 'date', 'query', 'user', 'text']
     encoding: 'ISO-8859-1'
-    nrows: 100
   layer: Raw
 
 ########## Intermediate Data ##########
 intermediate_tweets:
   type: pandas.CSVDataSet
   filepath: data/02_intermediate/intermediate_tweets.csv
-  load_args:
-    nrows: 100
   layer: Intermediate
 
 ########## Primary Data ###########
 cleaned_tweets:
   type: pandas.CSVDataSet
   filepath: data/03_primary/cleaned_tweets.csv
-  load_args:
-    header:
-    names: ['target', 'id', 'date', 'query', 'user', 'text']
-    encoding: 'ISO-8859-1'
   layer: Primary
+
+########## Feature Data ###########
+
+X_train:
+  type: pandas.CSVDataSet
+  filepath: data/04_feature/X_train.csv
+  layer: Feature
+
+X_test:
+  type: pandas.CSVDataSet
+  filepath: data/04_feature/X_test.csv
+  layer: Feature
+
+########## Model Input ##########
+X_train_vectorized:
+  type: sentiment_analysis_twitter.extras.datasets.sparse_matrix_dataset.SparseMatrixDataSet
+  filepath: data/05_model_input/X_train_vectorized.npz
+  layer: Model Input
+
+X_test_vectorized:
+  type: sentiment_analysis_twitter.extras.datasets.sparse_matrix_dataset.SparseMatrixDataSet
+  filepath: data/05_model_input/X_test_vectorized.npz
+  layer: Model Input
+
+y_train:
+  type: pandas.CSVDataSet
+  filepath: data/05_model_input/y_train.csv
+  layer: Model Input
+
+y_test:
+  type: pandas.CSVDataSet
+  filepath: data/05_model_input/y_test.csv
+  layer: Model Input
+
+########## Models ##########
+
+Classifier:
+  type: kedro.extras.datasets.pickle.PickleDataSet
+  filepath: data/06_models/classifier.pkl
+  backend: pickle
+  layer: Models

@@ -1,4 +1,15 @@
 ########### Data Preprocessing ##########
-spellcheck: True
-stopword_removal: True
+spellcheck: False
 lemmatization: True
+
+########## Feature Engineering ##########
+test_size: 0.33
+vectorizer:
+  =: sklearn.feature_extraction.text.TfidfVectorizer
+  analyzer: 'word'
+  stop_words: 'english'
+
+########## Train Eval ##########
+model:
+  =: sklearn.naive_bayes.MultinomialNB
+  alpha: 1
