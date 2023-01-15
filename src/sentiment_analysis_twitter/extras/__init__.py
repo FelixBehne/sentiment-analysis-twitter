@@ -1,3 +1,1 @@
-"""
-This module contains all extra implementations that go beyond the capabilities defined by kedro.
-"""
+"""This module contains extra functions and classes for the sentiment analysis of tweets."""

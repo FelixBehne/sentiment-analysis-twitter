@@ -1,38 +1,18 @@
 {
-  "jupyter.jupyterServerType": "local",
-  "python.linting.enabled": true,
-  "python.linting.mypyEnabled": true,
-  "python.linting.pylintEnabled": true,
-  "python.analysis.diagnosticSeverityOverrides": {
-    "reportUndefinedVariable": "none"
-  },
-  "files.exclude": {
-    "**/.git": true,
-    "**/.svn": true,
-    "**/.hg": true,
-    "**/CVS": true,
-    "**/.DS_Store": true,
-    "**/Thumbs.db": true,
-    "**/.mypy_cache": true,
-    ".ipython": true,
-    ".ipynb_checkpoints": true,
-    ".telemetry": true,
-    "**/__pycache__": true,
-    "**/info.log": true
-  },
-  "cSpell.words": [
-    "haha",
-    "kedro",
-    "lemmatization",
-    "lemmatize",
-    "lemmatizer",
-    "nrows",
-    "pipelinex",
-    "shoulda",
-    "stopwords",
-    "vectorize",
-    "vectorizer"
-  ],
-  "autoDocstring.docstringFormat": "google",
-  "python.linting.pylintArgs": ["--rcfile=${workspaceFolder}/.pylintrc"]
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        "**/node_modules": true,
+        "**/bower_components": true,
+        "**/dist": true,
+        "**/build": true,
+        "**/coverage": true,
+        "**/*.lock": true,
+        "**/*.egg-info": true,
+        "**/__init__.py": false,
+    }
 }

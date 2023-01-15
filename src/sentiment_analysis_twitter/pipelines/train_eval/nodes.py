@@ -6,10 +6,15 @@ import scipy
 from loguru import logger
 from sklearn.base import BaseEstimator
 from sklearn.metrics import classification_report
+from sklearn.ensemble import RandomForestClassifier
 
 
 def train_model_node(
-    X_train: scipy.sparse.csr_matrix, y_train: pd.Series, model: BaseEstimator
+    X_train: scipy.sparse.csr_matrix,
+    y_train: pd.Series,
+    sentiment_col_name: str,
+    text_col_name: str,
+    model_params: dict,
 ):
     """[summary]
 
@@ -21,14 +26,13 @@ def train_model_node(
     Returns:
         [type]: [description]
     """
-    logger.info(f"Fitting {type(model).__name__} with the following parameters:")
-    pprint(vars(model))
-    model.fit(X_train, y_train["target"])
-    return model
+    rf_model = RandomForestClassifier(**model_params)
+    rf_model.fit(X_train, y_train)
+    return rf_model
 
 
 def evaluate_mode_node(
-    Classifier: BaseEstimator, X_test: scipy.sparse.csr_matrix, y_test: pd.Series
+    classifier: BaseEstimator, X_test: scipy.sparse.csr_matrix, y_test: pd.Series
 ):
     """[summary]
 
@@ -37,4 +41,4 @@ def evaluate_mode_node(
         X_test (scipy.sparse.csr_matrix): [description]
         y_test (pd.Series): [description]
     """
-    print(classification_report(y_test.target, Classifier.predict(X_test)))
+    print(classification_report(y_test.target, classifier.predict(X_test)))

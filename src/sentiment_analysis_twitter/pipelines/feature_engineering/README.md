@@ -1,6 +1,6 @@
 # Pipeline feature_engineering
 
-> *Note:* This is a `README.md` boilerplate generated using `Kedro 0.17.5`.
+> *Note:* This is a `README.md` boilerplate generated using `Kedro 0.18.4`.
 
 ## Overview
 

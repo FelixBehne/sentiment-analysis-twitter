@@ -1,15 +1,44 @@
 ########### Data Preprocessing ##########
-spellcheck: False
-lemmatization: True
 
 ########## Feature Engineering ##########
-test_size: 0.33
-vectorizer:
-  =: sklearn.feature_extraction.text.TfidfVectorizer
-  analyzer: 'word'
-  stop_words: 'english'
+train_test_split_params:
+  test_size: 0.25
+  shuffle: True
+  stratify: False
+  random_state: 42
+sentiment_col_name: "sentiment"
+text_col_name: "text"
+tfidf_params:
+  strip_accents: "ascii"
+  lowercase: True
+  analyzer: "word"
+  stop_words: "english"
+  token_pattern: '(?u)\b\w\w+\b'
+  ngram_range: [1, 1] # will be converted to tuple in node
+  min_df: 1
+  max_features: null # equals None after save_load
+  vocabulary: null # equals None after save_load
+  binary: False
+  norm: "l2"
+  use_idf: True
+  smooth_idf: True
+  sublinear_tf: False
 
-########## Train Eval ##########
-model:
-  =: sklearn.naive_bayes.MultinomialNB
-  alpha: 1
+########## Model Training ##########
+model_params:
+  n_estimators: 100
+  criterion: "gini"
+  max_depth: null # equals None after save_load
+  min_samples_split: 2
+  min_samples_leaf: 1
+  min_weight_fraction_leaf: 0.0
+  max_features: "auto"
+  max_leaf_nodes: null # equals None after save_load
+  min_impurity_decrease: 0.0
+  bootstrap: True
+  oob_score: False
+  n_jobs: -1
+  random_state: 42
+  verbose: 0
+  warm_start: False
+  class_weight: null # equals None after save_load

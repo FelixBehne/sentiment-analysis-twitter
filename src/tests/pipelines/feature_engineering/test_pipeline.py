@@ -1,36 +1,159 @@
-# Copyright 2021 QuantumBlack Visual Analytics Limited
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-# OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND
-# NONINFRINGEMENT. IN NO EVENT WILL THE LICENSOR OR OTHER CONTRIBUTORS
-# BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN
-# ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF, OR IN
-# CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-#
-# The QuantumBlack Visual Analytics Limited ("QuantumBlack") name and logo
-# (either separately or in combination, "QuantumBlack Trademarks") are
-# trademarks of QuantumBlack. The License does not grant you any right or
-# license to the QuantumBlack Trademarks. You may not use the QuantumBlack
-# Trademarks or any confusingly similar mark as a trademark for your product,
-# or use the QuantumBlack Trademarks in any other manner that might cause
-# confusion in the marketplace, including but not limited to in advertising,
-# on websites, or on software.
-#
-# See the License for the specific language governing permissions and
-# limitations under the License.
-"""
-This is a boilerplate test file for pipeline 'feature_engineering'
-generated using Kedro 0.17.5.
-Please add your pipeline tests here.
+"""Integration tests for the feature engineering pipeline."""
 
-Kedro recommends using `pytest` framework, more info about it can be found
-in the official documentation:
-https://docs.pytest.org/en/latest/getting-started.html
-"""
+import pytest
+from kedro.io import DataCatalog, MemoryDataSet
+from kedro.pipeline import Pipeline, node
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+from sentiment_analysis_twitter.pipelines.feature_engineering.nodes import (
+    train_test_split_node,
+    vectorize_data_node,
+)
+from sentiment_analysis_twitter.pipelines.feature_engineering.pipeline import (
+    create_pipeline,
+)
+
+
+@pytest.fixture
+def mocked_catalog(cleaned_tweets):
+    catalog = DataCatalog()
+    catalog.add("cleaned_tweets", MemoryDataSet(cleaned_tweets))
+    catalog.add("params:sentiment_col_name", MemoryDataSet("sentiment"))
+    catalog.add("params:text_col_name", MemoryDataSet("text"))
+    catalog.add(
+        "params:train_test_split_params",
+        MemoryDataSet({"random_state": 42, "test_size": 0.25, "shuffle": True}),
+    )
+    catalog.add(
+        "params:tfidf_params",
+        MemoryDataSet(
+            {
+                "strip_accents": "ascii",
+                "lowercase": True,
+                "analyzer": "word",
+                "stop_words": "english",
+                "token_pattern": "(?u)\b\w\w+\b",
+                "ngram_range": [1, 1],  # will be converted to tuple in node
+                "min_df": 1,
+                "max_features": None,
+                "vocabulary": None,
+                "binary": False,
+                "norm": "l2",
+                "use_idf": True,
+                "smooth_idf": True,
+                "sublinear_tf": False,
+            }
+        ),
+    )
+    return catalog
+
+
+@pytest.fixture
+def pipeline():
+    return Pipeline(
+        [
+            node(
+                func=train_test_split_node,
+                inputs=[
+                    "cleaned_tweets",
+                    "params:sentiment_col_name",
+                    "params:text_col_name",
+                    "params:train_test_split_params",
+                ],
+                outputs=["X_train", "X_test", "y_train", "y_test"],
+                name="train_test_split_node",
+            ),
+            node(
+                func=vectorize_data_node,
+                inputs=[
+                    "X_train",
+                    "X_test",
+                    "params:tfidf_params",
+                    "params:text_col_name",
+                ],
+                outputs=["vectorized_train", "vectorized_test"],
+                name="vectorize_data_node",
+            ),
+        ]
+    )
+
+
+def test_pipeline(
+    seq_runner,
+    mocked_catalog,
+    pipeline,
+):
+    # run the pipeline
+    output = seq_runner.run(pipeline, mocked_catalog)
+
+    # check the output
+    assert output["vectorized_train"].shape == (3, 2)
+    assert output["vectorized_test"].shape == (1, 3)
+
+
+# def test_pipeline_with_mocked_nodes(
+#     mocker,
+#     seq_runner,
+#     catalog,
+#     cleaned_tweets,
+#     pipeline,
+# ):
+#     mocker.patch(
+#         "sentiment_analysis_twitter.pipelines.feature_engineering.nodes.train_test_split_node",
+#         return_value=(
+#             cleaned_tweets,
+#             cleaned_tweets,
+#             cleaned_tweets,
+#             cleaned_tweets,
+#         ),
+#     )
+#     mocker.patch(
+#         "sentiment_analysis_twitter.pipelines.feature_engineering.nodes.vectorize_data_node",
+#         return_value=(
+#             cleaned_tweets,
+#             cleaned_tweets,
+#         ),
+#     )
+#     output = seq_runner.run(pipeline, catalog)
+
+#     assert output["vectorized_train"].shape == (3, 3)
+#     assert output["vectorized_test"].shape == (1, 3)
+
+
+# def test_pipeline_defined_in_registry(
+#     seq_runner,
+#     catalog,
+# ):
+
+#     pipeline = create_pipeline()
+
+#     # run the pipeline
+#     output = seq_runner.run(pipeline, catalog)
+
+#     # check the output
+#     assert output["vectorized_train"].shape == (3, 3)
+#     assert output["vectorized_test"].shape == (1, 3)
+
+
+# def test_pipeline_with_mocked_catalog(
+#     mocker,
+#     seq_runner,
+#     cleaned_tweets,
+#     pipeline,
+# ):
+#     catalog = mocker.patch(
+#         {
+#             "cleaned_tweets": cleaned_tweets,
+#             "params:split_ratio": 0.25,
+#             "params:random_state": 42,
+#             "params:vectorizer": TfidfVectorizer(),
+#         },
+#     )
+#     output = seq_runner.run(pipeline, catalog)
+
+#     assert output["vectorized_train"].shape == (3, 3)
+#     assert output["vectorized_test"].shape == (1, 3)
+#     assert output["X_train"].shape == (3, 3)
+#     assert output["X_test"].shape == (1, 3)
+#     assert output["y_train"].shape == (3, 3)
+#     assert output["y_test"].shape == (1, 3)

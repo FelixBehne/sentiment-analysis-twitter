@@ -1,27 +1,29 @@
 ########### Raw Data ##########
 raw_tweets:
   type: pandas.CSVDataSet
-  filepath: data/01_raw/raw_tweets.csv
+  filepath: data/01_raw/training.1600000.processed.noemoticon.csv
   load_args:
-    header:
-    names: ['target', 'id', 'date', 'query', 'user', 'text']
-    encoding: 'ISO-8859-1'
+    names: ["sentiment", "ids", "date", "flag", "user", "text"]
+    encoding: "latin-1"
+    usecols: ["sentiment", "text"]
+    nrows: 1000
+  save_args:
+    index: False
   layer: Raw
 
 ########## Intermediate Data ##########
-intermediate_tweets:
+cleaned_tweets:
   type: pandas.CSVDataSet
-  filepath: data/02_intermediate/intermediate_tweets.csv
+  filepath: data/02_intermediate/cleaned_tweets.csv
   layer: Intermediate
 
 ########## Primary Data ###########
-cleaned_tweets:
+normalized_tweets:
   type: pandas.CSVDataSet
-  filepath: data/03_primary/cleaned_tweets.csv
+  filepath: data/03_primary/normalized_tweets.csv
   layer: Primary
 
 ########## Feature Data ###########
-
 X_train:
   type: pandas.CSVDataSet
   filepath: data/04_feature/X_train.csv
@@ -32,15 +34,15 @@ X_test:
   filepath: data/04_feature/X_test.csv
   layer: Feature
 
-########## Model Input ##########
+########## Model Input ###########
 X_train_vectorized:
-  type: sentiment_analysis_twitter.extras.datasets.sparse_matrix_dataset.SparseMatrixDataSet
-  filepath: data/05_model_input/X_train_vectorized.npz
+  type: pandas.CSVDataSet
+  filepath: data/05_model_input/X_train_vectorized.csv
   layer: Model Input
 
 X_test_vectorized:
-  type: sentiment_analysis_twitter.extras.datasets.sparse_matrix_dataset.SparseMatrixDataSet
-  filepath: data/05_model_input/X_test_vectorized.npz
+  type: pandas.CSVDataSet
+  filepath: data/05_model_input/X_test_vectorized.csv
   layer: Model Input
 
 y_train:
@@ -53,10 +55,15 @@ y_test:
   filepath: data/05_model_input/y_test.csv
   layer: Model Input
 
-########## Models ##########
+########## Model ###########
+classifier:
+  type: pickle.PickleDataSet
+  filepath: data/06_model/model.joblib
+  backend: joblib
+  layer: Model
 
-Classifier:
-  type: kedro.extras.datasets.pickle.PickleDataSet
-  filepath: data/06_models/classifier.pkl
-  backend: pickle
-  layer: Models
+vectorizer:
+  type: pickle.PickleDataSet
+  filepath: data/06_model/vectorizer.joblib
+  backend: joblib
+  layer: Model

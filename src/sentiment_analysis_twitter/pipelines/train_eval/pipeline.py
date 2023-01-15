@@ -10,13 +10,19 @@ def create_pipeline():
         [
             node(
                 func=train_model_node,
-                inputs=["X_train_vectorized", "y_train", "params:model"],
-                outputs="Classifier",
+                inputs=[
+                    "X_train_vectorized",
+                    "y_train",
+                    "params:text_col_name",
+                    "params:sentiment_col_name",
+                    "params:model_params",
+                ],
+                outputs="classifier",
                 name="train_model_node",
             ),
             node(
                 func=evaluate_mode_node,
-                inputs=["Classifier", "X_test_vectorized", "y_test"],
+                inputs=["classifier", "X_test_vectorized", "y_test"],
                 outputs=None,
                 name="evaluate_model_node",
             ),

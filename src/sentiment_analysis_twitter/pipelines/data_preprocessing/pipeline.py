@@ -5,23 +5,19 @@ from .nodes import basic_cleanup, normalize_tweets
 
 
 def create_pipeline():
-    "Instantiates the data preprocessing pipeline"
+    """Create the pipeline for data preprocessing."""
     return Pipeline(
         [
             node(
                 basic_cleanup,
                 inputs="raw_tweets",
-                outputs="intermediate_tweets",
+                outputs="cleaned_tweets",
                 name="basic_cleanup",
             ),
             node(
                 normalize_tweets,
-                inputs=[
-                    "intermediate_tweets",
-                    "params:lemmatization",
-                    "params:spellcheck",
-                ],
-                outputs="cleaned_tweets",
+                inputs="cleaned_tweets",
+                outputs="normalized_tweets",
                 name="normalize_tweets",
             ),
         ]
