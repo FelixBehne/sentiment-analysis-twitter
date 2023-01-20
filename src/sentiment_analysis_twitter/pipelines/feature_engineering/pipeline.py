@@ -14,7 +14,7 @@ def create_pipeline() -> Pipeline:
             node(
                 func=train_test_split_node,
                 inputs=[
-                    "cleaned_tweets",
+                    "normalized_tweets",
                     "params:sentiment_col_name",
                     "params:text_col_name",
                     "params:train_test_split_params",

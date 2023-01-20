@@ -13,8 +13,6 @@ def create_pipeline():
                 inputs=[
                     "X_train_vectorized",
                     "y_train",
-                    "params:text_col_name",
-                    "params:sentiment_col_name",
                     "params:model_params",
                 ],
                 outputs="classifier",

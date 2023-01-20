@@ -2,9 +2,8 @@
 
 ########## Feature Engineering ##########
 train_test_split_params:
-  test_size: 0.25
+  test_size: 0.2
   shuffle: True
-  stratify: False
   random_state: 42
 sentiment_col_name: "sentiment"
 text_col_name: "text"
@@ -14,15 +13,7 @@ tfidf_params:
   analyzer: "word"
   stop_words: "english"
   token_pattern: '(?u)\b\w\w+\b'
-  ngram_range: [1, 1] # will be converted to tuple in node
-  min_df: 1
-  max_features: null # equals None after save_load
-  vocabulary: null # equals None after save_load
-  binary: False
-  norm: "l2"
-  use_idf: True
-  smooth_idf: True
-  sublinear_tf: False
+  ngram_range: [1, 3] # will be converted to tuple in node
 
 ########## Model Training ##########
 model_params:
@@ -32,7 +23,6 @@ model_params:
   min_samples_split: 2
   min_samples_leaf: 1
   min_weight_fraction_leaf: 0.0
-  max_features: "auto"
   max_leaf_nodes: null # equals None after save_load
   min_impurity_decrease: 0.0
   bootstrap: True

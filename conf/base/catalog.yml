@@ -6,7 +6,6 @@ raw_tweets:
     names: ["sentiment", "ids", "date", "flag", "user", "text"]
     encoding: "latin-1"
     usecols: ["sentiment", "text"]
-    nrows: 1000
   save_args:
     index: False
   layer: Raw
@@ -36,13 +35,13 @@ X_test:
 
 ########## Model Input ###########
 X_train_vectorized:
-  type: pandas.CSVDataSet
-  filepath: data/05_model_input/X_train_vectorized.csv
+  type: sentiment_analysis_twitter.extras.datasets.sparse_matrix_dataset.SparseMatrixDataSet
+  filepath: data/05_model_input/X_train_vectorized.npz
   layer: Model Input
 
 X_test_vectorized:
-  type: pandas.CSVDataSet
-  filepath: data/05_model_input/X_test_vectorized.csv
+  type: sentiment_analysis_twitter.extras.datasets.sparse_matrix_dataset.SparseMatrixDataSet
+  filepath: data/05_model_input/X_test_vectorized.npz
   layer: Model Input
 
 y_train:
@@ -58,12 +57,12 @@ y_test:
 ########## Model ###########
 classifier:
   type: pickle.PickleDataSet
-  filepath: data/06_model/model.joblib
+  filepath: data/06_models/model.joblib
   backend: joblib
   layer: Model
 
 vectorizer:
   type: pickle.PickleDataSet
-  filepath: data/06_model/vectorizer.joblib
+  filepath: data/06_models/vectorizer.joblib
   backend: joblib
   layer: Model

@@ -17,30 +17,18 @@ from kedro.io.core import (
 class SparseMatrixDataSet(AbstractVersionedDataSet):
     """``SparseMatrixDataSet`` loads/saves data from/to a npz file using scipy."""
 
-    # pylint: disable=too-many-arguments
     def __init__(
-        self,
-        filepath: str,
-        version: Version = None,
-        layer: str = None,
+        self, filepath: str, version: Version | None = None, layer: str | None = None
     ) -> None:
-        """Creates a new instance of ``CSVDataSet`` pointing to a concrete CSV file
-        on a specific filesystem.
-        """
+        """Creates a new instance of ``SparseMatrixDataSet`` pointing to a specific file on a filesystem."""
 
-        protocol, path = get_protocol_and_path(filepath, version)
-
-        self._protocol = protocol
-        self._fs = fsspec.filesystem(self._protocol)
-
-        super().__init__(
-            filepath=PurePosixPath(path),
-            version=version,
-            exists_function=self._fs.exists,
-            glob_function=self._fs.glob,
-        )
-
+        protocol, path = get_protocol_and_path(filepath, version)  # type: ignore
+        self._fs = fsspec.filesystem(protocol)
+        super().__init__(filepath=PurePosixPath(path), version=version)
         self._layer = layer
+        self._load_path: str | None = None
+        self._save_path: str | None = None
+        self._protocol = protocol
 
     def _describe(self) -> Dict[str, Any]:
         return dict(
@@ -51,17 +39,14 @@ class SparseMatrixDataSet(AbstractVersionedDataSet):
         )
 
     def _load(self) -> pd.DataFrame:
-        load_path = get_filepath_str(self._get_load_path(), self._protocol)
-        return scipy.sparse.load_npz(load_path)
+        if not self._load_path:
+            self._load_path = get_filepath_str(self._get_load_path(), self._protocol)
+        return scipy.sparse.load_npz(self._load_path)
 
     def _save(self, data: pd.DataFrame) -> None:
-        save_path = get_filepath_str(self._get_save_path(), self._protocol)
-        scipy.sparse.save_npz(save_path, data)
+        if not self._save_path:
+            self._save_path = get_filepath_str(self._get_save_path(), self._protocol)
+        scipy.sparse.save_npz(self._save_path, data)
 
     def _exists(self) -> bool:
-        try:
-            load_path = get_filepath_str(self._get_load_path(), self._protocol)
-        except DataSetError:
-            return False
-
-        return self._fs.exists(load_path)
+        return self._fs.exists(self._load_path) if self._load_path else False

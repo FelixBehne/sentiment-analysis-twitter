@@ -50,9 +50,16 @@ def normalize_tweets(tweets: pd.DataFrame) -> pd.DataFrame:
     Returns:
         pd.DataFrame: Normalized tweets.
     """
+    # Remove abbreviations and slang
     primary_tweets = (
         tweets.dropna().replace(abbr_dict, regex=True).replace(slang_dict, regex=True)
     )
+
+    # Remove repeated vowels
+    primary_tweets["text"] = primary_tweets["text"].apply(
+        lambda x: re.sub(r"([aeiou])\1+", r"\1", x)
+    )
+
     # remove quotations
     primary_tweets = primary_tweets.replace('"', "").replace("'", "")
 
@@ -64,4 +71,18 @@ def normalize_tweets(tweets: pd.DataFrame) -> pd.DataFrame:
     primary_tweets["text"] = primary_tweets["text"].apply(
         lambda x: " ".join([stemmer.stem(word) for word in x.split()])
     )
+
+    # Remove leading and trailing spaces
+    primary_tweets["text"] = primary_tweets["text"].apply(lambda x: x.strip())
+
+    # drop nans, None, and empty strings
+    primary_tweets = primary_tweets.dropna()
+    primary_tweets = primary_tweets[primary_tweets["text"] != "None"]
+    primary_tweets = primary_tweets[primary_tweets["text"] != ""]
+    primary_tweets = primary_tweets[primary_tweets["text"] != " "]
+    primary_tweets = primary_tweets[primary_tweets["text"] != "np.nan"]
+
+    # drop duplicates
+    primary_tweets = primary_tweets.drop_duplicates(keep="first")
+
     return primary_tweets
